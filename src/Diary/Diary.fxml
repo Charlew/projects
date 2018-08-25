@@ -1,11 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="Diary.DiaryController" prefHeight="768.0" prefWidth="1024.0">
-
+<AnchorPane prefHeight="768.0" prefWidth="1024.0" styleClass="border-right: white" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Diary.DiaryController">
+   <children>
+      <TableView fx:id="diaryTable" layoutX="325.0" layoutY="362.0" prefHeight="248.0" prefWidth="672.0">
+        <columns>
+          <TableColumn fx:id="colName" prefWidth="433.0" text="Nazwa" />
+          <TableColumn fx:id="colKcal" prefWidth="251.0" text="Kcal" />
+        </columns>
+      </TableView>
+      <Button fx:id="buttonBack" layoutX="362.0" layoutY="666.0" mnemonicParsing="false" onAction="#backButtonHandle" text="Powrót" />
+      <Pane layoutY="20.0" prefHeight="484.0" prefWidth="310.0" style="-fx-background-color: white;">
+         <children>
+            <Button fx:id="buttonProductsToDiary" layoutX="23.0" layoutY="416.0" mnemonicParsing="false" onAction="#addProductToDiary" prefHeight="46.0" prefWidth="243.0" text="Dodaj produkt do dziennika" />
+             <TextField fx:id="tfNameProduct" layoutX="117.0" layoutY="281.0" prefHeight="31.0" prefWidth="143.0" />
+             <Label layoutX="25.0" layoutY="286.0" text="Nazwa" />
+             <TextField fx:id="tfKcalProduct" layoutX="117.0" layoutY="322.0" prefHeight="31.0" prefWidth="91.0" />
+             <Label layoutX="25.0" layoutY="327.0" text="Kcal" />
+             <TextField fx:id="tfAmountProduct" layoutX="117.0" layoutY="367.0" prefHeight="31.0" prefWidth="91.0" />
+             <Label layoutX="25.0" layoutY="372.0" text="Ustaw ilość" />
+         </children>
+      </Pane>
+       <Pane layoutX="310.0" layoutY="20.0" prefHeight="324.0" prefWidth="685.0" style="-fx-background-color: white;">
+         <children>
+             <TableView fx:id="productsTable" layoutX="-295.0" layoutY="21.0" prefHeight="241.0" prefWidth="419.0">
+                 <columns>
+                     <TableColumn fx:id="colProdName" prefWidth="144.0" text="Nazwa" />
+                     <TableColumn fx:id="colProdKcal" prefWidth="73.0" text="Kcal" />
+                     <TableColumn fx:id="colProdAmount" prefWidth="63.0" text="Ilość" />
+                     <TableColumn fx:id="colProdUsername" prefWidth="133.0" text="Dodane przez" />
+                 </columns>
+             </TableView>
+             <TableView fx:id="recipesTable" layoutX="167.0" layoutY="20.0" prefHeight="241.0" prefWidth="482.0">
+                 <columns>
+                     <TableColumn fx:id="colRecName" prefWidth="169.0" text="Nazwa" />
+                     <TableColumn fx:id="colRecAllKcal" prefWidth="95.0" text="Kcal" />
+                     <TableColumn fx:id="colRecUsername" prefWidth="113.0" text="Dodane przez" />
+                 </columns>
+             </TableView>
+            <Button fx:id="buttonRecipesToDiary" layoutX="287.0" layoutY="264.0" mnemonicParsing="false" onAction="#addRecipeToDiary" prefHeight="46.0" prefWidth="243.0" text="Dodaj całą potrawe do dziennika" />
+         </children></Pane>
+      <TextField fx:id="tfKcalSum" layoutX="123.0" layoutY="528.0" prefHeight="31.0" prefWidth="152.0" />
+      <Label layoutX="42.0" layoutY="533.0" text="Suma kcal " />
+      <TextField fx:id="tfKcalRemain" layoutX="123.0" layoutY="567.0" prefHeight="31.0" prefWidth="152.0" />
+      <Label layoutX="42.0" layoutY="572.0" text="Pozostało" />
+      <Button layoutX="553.0" layoutY="666.0" mnemonicParsing="false" onAction="#saveDiary" text="Zapisz" />
+   </children>
 </AnchorPane>

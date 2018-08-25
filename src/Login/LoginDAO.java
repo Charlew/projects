@@ -11,6 +11,10 @@ public class LoginDAO {
     Connection connection;
     private static String username;
     private static Integer userId;
+    private static Integer kcalDemand;
+
+    public Integer getKcalDemand() { return this.kcalDemand; }
+    public void setKcalDemand(Integer kcalDemand) { this.kcalDemand = kcalDemand; }
 
     public void setUsername(String username){
         this.username = username;
@@ -33,7 +37,7 @@ public class LoginDAO {
         ResultSet resultSet = null;
         try {
             connection = ConnectionManager.getConnection();
-            preparedStatement = connection.prepareStatement("SELECT id_user, username, password FROM users WHERE username = ? AND password = ? ");
+            preparedStatement = connection.prepareStatement("SELECT id_user, username, kcal_demand FROM users WHERE username = ? AND password = ? ");
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
 
@@ -42,6 +46,7 @@ public class LoginDAO {
             if (resultSet.next()) {
                 setUsername(username);
                 setUserId(resultSet.getInt("id_user"));
+                setKcalDemand(resultSet.getInt("kcal_demand"));
                 System.out.println("User authenticated successfully " + getUsername() + " ID " + getUserId());
                 status = true;
             } else {

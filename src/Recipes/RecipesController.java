@@ -1,6 +1,5 @@
 package Recipes;
 
-import Products.*;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -19,16 +18,16 @@ public class RecipesController extends RecipesDAO{
     @FXML private Button buttonBack;
 
     //Recipes
-    @FXML private TableColumn<Recipes, String> colRecName;
-    @FXML private TableColumn<Recipes, Integer> colRecAllKcal;
-    @FXML private TableColumn<Recipes, String> colRecUsername;
+    @FXML protected TableColumn<Recipes, String> colRecName;
+    @FXML protected TableColumn<Recipes, Integer> colRecAllKcal;
+    @FXML protected TableColumn<Recipes, String> colRecUsername;
     @FXML private TextArea taIngredients;
     @FXML private TextArea taDescription;
     @FXML private TextArea taComment;
     @FXML private TextArea taAllComments;
-    @FXML private TableView<Recipes> recipesTable;
+    @FXML protected TableView<Recipes> recipesTable;
 
-    public void initialize() {
+    public void initialize() throws SQLException, ClassNotFoundException {
         try {
             //Recipes Table
             colRecName.setCellValueFactory(cellData -> cellData.getValue().getRecipeName());
@@ -36,6 +35,9 @@ public class RecipesController extends RecipesDAO{
             colRecUsername.setCellValueFactory(cellData -> cellData.getValue().getRecipeUsername());
             ObservableList<Recipes> recipesList = getAllRecords();
             populateRecipesTable(recipesList);
+            taDescription.setEditable(false);
+            taIngredients.setEditable(false);
+            taAllComments.setEditable(false);
 
             recipesTable.setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override
@@ -45,9 +47,6 @@ public class RecipesController extends RecipesDAO{
                         taDescription.setText(selectedRecipe.getDescription());
                         taIngredients.setText(getIngredients(selectedRecipe.getIdRecipe()));
                         taAllComments.setText(getAllComments(selectedRecipe.getIdRecipe()));
-                        taDescription.setEditable(false);
-                        taIngredients.setEditable(false);
-                        taAllComments.setEditable(false);
                     }
                 }
             });

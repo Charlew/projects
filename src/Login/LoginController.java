@@ -7,14 +7,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 
-import java.sql.*;
 
 public class LoginController extends LoginDAO{
-    @FXML private TextField txtUsername, txtPassword;
+    @FXML private TextField txtUsername;
+    @FXML PasswordField txtPassword;
     @FXML private Button buttonBack;
 
     @FXML void backToMainPage(ActionEvent event) throws Exception{
@@ -25,7 +26,7 @@ public class LoginController extends LoginDAO{
         stage.show();
     }
 
-    @FXML void handleButtonLogin(ActionEvent actionEvent) throws Exception{
+    @FXML void Login(ActionEvent actionEvent) throws Exception{
         try {
             if(isLogin(txtUsername.getText(), txtPassword.getText())){
                 Stage primaryStage = (Stage) txtUsername.getScene().getWindow();
@@ -37,8 +38,11 @@ public class LoginController extends LoginDAO{
                 primaryStage.setScene(scene);
                 primaryStage.show();
 
+            }else if(txtUsername.getText().isEmpty() || txtPassword.getText().isEmpty()){
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Rejestracja");
+                alert.setHeaderText("Wprowadź wszystkie dane!");
             }else{
-                System.out.println("Password incorrect!");
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Błąd");
                 alert.setHeaderText("Niepowodzenie logowania");

@@ -19,16 +19,16 @@ public class RecipesModalController extends RecipesController{
     Integer kcalSum = 0;
 
     //Tabelka produktow
-    @FXML private TableView<Products> productsTable;
-    @FXML private TableColumn<Products, String> colProdName;
-    @FXML private TableColumn<Products, Integer> colProdKcal;
-    @FXML private TableColumn<Products, Integer> colProdAmount;
-    @FXML private TableColumn<Products, String> colProdUsername;
+    @FXML protected TableView<Products> productsTable;
+    @FXML protected TableColumn<Products, String> colProdName;
+    @FXML protected TableColumn<Products, Integer> colProdKcal;
+    @FXML protected TableColumn<Products, Integer> colProdAmount;
+    @FXML protected TableColumn<Products, String> colProdUsername;
 
     //Pola dla produktow
-    @FXML private TextField tfNameProduct;
-    @FXML private TextField tfKcalProduct;
-    @FXML private TextField tfAmountProduct;
+    @FXML protected TextField tfNameProduct;
+    @FXML protected TextField tfKcalProduct;
+    @FXML protected TextField tfAmountProduct;
 
     //Tabelka produktow do przepisu
     @FXML private TableView<ProductsToRecipe> productsToRecipesTable;
@@ -39,7 +39,7 @@ public class RecipesModalController extends RecipesController{
     @FXML private TextField tfNameRecipe;
     @FXML private TextArea taDescription;
 
-    public void initialize() {
+    public void initialize() throws SQLException, ClassNotFoundException {
         try {
             //Products Table
             colProdName.setCellValueFactory(cellData -> cellData.getValue().getProductName());
@@ -53,10 +53,10 @@ public class RecipesModalController extends RecipesController{
                 @Override
                 public void handle(MouseEvent event) {
                     if(productsTable.getSelectionModel().getSelectedItem() != null){
-                        Products selectedRecipe = productsTable.getSelectionModel().getSelectedItem();
-                        tfNameProduct.setText(selectedRecipe.getName());
-                        tfKcalProduct.setText(String.valueOf(selectedRecipe.getKcal()));
-                        tfAmountProduct.setText(String.valueOf(selectedRecipe.getAmount()));
+                        Products selectedProduct = productsTable.getSelectionModel().getSelectedItem();
+                        tfNameProduct.setText(selectedProduct.getName());
+                        tfKcalProduct.setText(String.valueOf(selectedProduct.getKcal()));
+                        tfAmountProduct.setText(String.valueOf(selectedProduct.getAmount()));
                         tfNameProduct.setEditable(false);
                         tfKcalProduct.setEditable(false);
                         Integer amount, kcal;
@@ -79,10 +79,11 @@ public class RecipesModalController extends RecipesController{
         }
     }
 
-    private void populateProductsTable(ObservableList<Products> productsList){
+    protected void populateProductsTable(ObservableList<Products> productsList){
         productsTable.setItems(productsList);
     }
 
+    /** Dodawanie produktu do pomocniczej tabelki produktow do przepisu */
     @FXML void addProductToRecipe(ActionEvent event){
         colProdToRecName.setCellValueFactory(new PropertyValueFactory<>("name"));
         colProdToRecKcal.setCellValueFactory(new PropertyValueFactory<>("kcal"));
@@ -114,12 +115,21 @@ public class RecipesModalController extends RecipesController{
     }
 
     @FXML void insertRecipe(ActionEvent event) throws SQLException, ClassNotFoundException {
-        addRecipe(tfNameRecipe.getText(), Integer.parseInt(tfKcalSum.getText()), taDescription.getText());
+        if(tfNameRecipe.getText().isEmpty() || taDescription.getText().isEmpty() || products.isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Błąd");
+            alert.setHeaderText("Puste pola!");
+            alert.setContentText("Sprawdź czy wprowadzono wszystkie potrzebne dane");
+            alert.showAndWait();
+        }else{
+            addRecipe(tfNameRecipe.getText(), Integer.parseInt(tfKcalSum.getText()), taDescription.getText());
 
-        for(int i = 0; i < products.size(); i++){
-            addRecipesProducts( products.get(i).toString());
+            for(int i = 0; i < products.size(); i++){
+                addRecipesProducts( products.get(i).toString());
+            }
+            Stage stage = (Stage) tfNameRecipe.getScene().getWindow();
+            stage.close();
         }
-        Stage stage = (Stage) tfNameRecipe.getScene().getWindow();
-        stage.close();
+
     }
 }

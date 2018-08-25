@@ -2,10 +2,9 @@ package Recipes;
 
 import DbConnection.ConnectionManager;
 import Login.LoginController;
+import Login.LoginDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,7 +13,7 @@ import java.util.List;
 
 public class RecipesDAO {
 
-    LoginController loginController = new LoginController();
+    LoginDAO loginDAO = new LoginDAO();
     private static String name;
     private static Integer allKcal;
     private static String description;
@@ -50,7 +49,7 @@ public class RecipesDAO {
         try{
             preparedStatement = ConnectionManager.getConnection()
                     .prepareStatement("SELECT id_recipe FROM recipes WHERE id_user = ? AND name = ? AND all_kcal = ? AND description = ?");
-            preparedStatement.setInt(1, loginController.getUserId());
+            preparedStatement.setInt(1, loginDAO.getUserId());
             preparedStatement.setString(2, getName());
             preparedStatement.setInt(3, getAllKcal());
             preparedStatement.setString(4, getDescription());
@@ -114,7 +113,7 @@ public class RecipesDAO {
                 preparedStatement1.setInt(1, resultSet.getInt("id_prod"));
                 ResultSet resultSet1 = preparedStatement1.executeQuery();
                 if (resultSet1.next()) {
-                    ingredients.add(resultSet1.getString("name") + ": " + resultSet1.getInt("amount") + "g");
+                    ingredients.add(resultSet1.getString("name"));
                 }
             }
         } catch (SQLException e) {
@@ -134,8 +133,8 @@ public class RecipesDAO {
         try{
              preparedStatement = ConnectionManager.getConnection()
                     .prepareStatement("INSERT INTO recipes SET id_user = ?, username = ?, name = ?, all_kcal = ?, description = ?");
-            preparedStatement.setInt(1, loginController.getUserId());
-            preparedStatement.setString(2, loginController.getUsername());
+            preparedStatement.setInt(1, loginDAO.getUserId());
+            preparedStatement.setString(2, loginDAO.getUsername());
             preparedStatement.setString(3, name);
             preparedStatement.setInt(4, allKcal);
             preparedStatement.setString(5, description);
@@ -153,7 +152,7 @@ public class RecipesDAO {
 
     protected void addRecipesProducts(String productName){
         PreparedStatement preparedStatement = null;
-        PreparedStatement preparedStatement1 = null;
+//        PreparedStatement preparedStatement1 = null;
         ResultSet resultSet = null;
         try{
             preparedStatement = ConnectionManager.getConnection().prepareStatement("SELECT * FROM products WHERE name = ?");
@@ -208,7 +207,7 @@ public class RecipesDAO {
             preparedStatement = ConnectionManager.getConnection()
                     .prepareStatement("INSERT INTO comments SET id_recipe = ?, username = ?, content = ?");
             preparedStatement.setInt(1, idRecipe);
-            preparedStatement.setString(2, loginController.getUsername());
+            preparedStatement.setString(2, loginDAO.getUsername());
             preparedStatement.setString(3, content);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -216,20 +215,20 @@ public class RecipesDAO {
         }
     }
 
-    protected String showRecipeUsername(Integer idRecipe){
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        try{
-            preparedStatement = ConnectionManager.getConnection()
-                    .prepareStatement("SELECT username FROM recipes WHERE id_recipe = ?");
-            preparedStatement.setInt(1, idRecipe);
-            resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()){
-                return resultSet.getString("username");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+//    protected String showRecipeUsername(Integer idRecipe){
+//        PreparedStatement preparedStatement = null;
+//        ResultSet resultSet = null;
+//        try{
+//            preparedStatement = ConnectionManager.getConnection()
+//                    .prepareStatement("SELECT username FROM recipes WHERE id_recipe = ?");
+//            preparedStatement.setInt(1, idRecipe);
+//            resultSet = preparedStatement.executeQuery();
+//            if(resultSet.next()){
+//                return resultSet.getString("username");
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 }

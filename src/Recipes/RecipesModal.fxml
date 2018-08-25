@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane prefHeight="768" prefWidth="1024" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Recipes.RecipesModalController">
-    <TableView fx:id="productsTable" layoutX="26.0" layoutY="63.0" prefHeight="150.0" prefWidth="443.0" AnchorPane.leftAnchor="26.0" AnchorPane.rightAnchor="555.0" AnchorPane.topAnchor="63.0">
+    <TableView fx:id="productsTable" layoutX="26.0" layoutY="63.0" prefHeight="150.0" prefWidth="437.0" AnchorPane.leftAnchor="26.0" AnchorPane.rightAnchor="561.0" AnchorPane.topAnchor="63.0">
         <columns>
             <TableColumn fx:id="colProdName" prefWidth="144.0" text="Nazwa" />
             <TableColumn fx:id="colProdKcal" prefWidth="73.0" text="Kcal" />
@@ -27,8 +27,8 @@
    <Label layoutX="32.0" layoutY="367.0" text="Kcal" />
    <TextField fx:id="tfAmountProduct" layoutX="115.0" layoutY="404.0" prefHeight="31.0" prefWidth="91.0" />
    <Label layoutX="33.0" layoutY="409.0" text="Ustaw ilość" />
-   <Button layoutX="547.0" layoutY="138.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="177.0" text="Dodaj nowy produkt" />
    <Label layoutX="527.0" layoutY="101.0" text="Nie znalazłeś swojego produktu?" />
+    <Label layoutX="527.0" layoutY="138.0" text="Dodaj go w sekcji Produkty" />
    <TextArea fx:id="taDescription" layoutX="517.0" layoutY="249.0" prefHeight="257.0" prefWidth="306.0" />
    <Label layoutX="517.0" layoutY="220.0" prefHeight="21.0" prefWidth="60.0" text="Przepis" />
    <TableView fx:id="productsToRecipesTable" layoutX="43.0" layoutY="496.0" prefHeight="170.0" prefWidth="288.0">

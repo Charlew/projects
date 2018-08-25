@@ -5,21 +5,27 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import java.sql.*;
 
 public class RegisterController extends RegisterDAO{
-    @FXML private TextField txtEmail, txtUsername, txtPassword;
+    @FXML private TextField txtEmail, txtUsername;
+    @FXML PasswordField txtPassword, txtConfirmPassword;
     @FXML private Label labelRegister;
     @FXML private Button buttonBack;
 
     @FXML void Register(ActionEvent actionEvent) throws Exception{
         try{
-            if(checkUserExists(txtUsername.getText())){
+            if(txtEmail.getText().isEmpty() || txtUsername.getText().isEmpty() || txtPassword.getText().isEmpty() || txtConfirmPassword.getText().isEmpty()){
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Rejestracja");
+                alert.setHeaderText("Wprowadź wszystkie dane!");
+            }else if(txtConfirmPassword.getText() != txtPassword.getText()){
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Rejestracja");
+                alert.setHeaderText("Podane hasła różnią się!");
+            } else if(checkUserExists(txtUsername.getText())){
                 labelRegister.setText("Istnieje już użytkownik o podanej nazwie");
             }else{
                 boolean redirect = false;

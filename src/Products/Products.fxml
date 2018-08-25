@@ -12,10 +12,10 @@
 
 <AnchorPane prefHeight="769.0" prefWidth="1021.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Products.ProductsController">
    <children>
-      <TextField fx:id="tfNameSearch" layoutX="367.0" layoutY="78.0" prefHeight="31.0" prefWidth="173.0" promptText="Wpisz nazwe..." />
-      <Button fx:id="buttonSearch" layoutX="555.0" layoutY="78.0" mnemonicParsing="false" onAction="#searchProduct" text="Szukaj" />
+      <TextField fx:id="tfNameSearch" layoutX="416.0" layoutY="160.0" onAction="#searchProduct" prefHeight="31.0" prefWidth="173.0" promptText="Wpisz nazwe..." />
+      <Button fx:id="buttonSearch" layoutX="601.0" layoutY="160.0" mnemonicParsing="false" onAction="#searchProduct" text="Szukaj" />
       <HBox layoutX="448.0" layoutY="309.0" prefHeight="75.0" prefWidth="242.0" />
-      <TableView fx:id="productsTable" layoutX="367.0" layoutY="144.0" prefHeight="241.0" prefWidth="441.0" AnchorPane.leftAnchor="367.0" AnchorPane.rightAnchor="216.0" AnchorPane.topAnchor="144.0">
+      <TableView fx:id="productsTable" layoutX="416.0" layoutY="199.0" prefHeight="370.0" prefWidth="452.0" AnchorPane.leftAnchor="416.0" AnchorPane.rightAnchor="153.0" AnchorPane.topAnchor="199.0">
         <columns>
             <TableColumn fx:id="colProdName" prefWidth="144.0" text="Nazwa" />
             <TableColumn fx:id="colProdKcal" prefWidth="73.0" text="Kcal" />
@@ -23,13 +23,13 @@
             <TableColumn fx:id="colProdUsername" prefWidth="133.0" text="Dodane przez" />
         </columns>
       </TableView>
-      <Button fx:id="buttonBack" layoutX="414.0" layoutY="458.0" mnemonicParsing="false" onAction="#backButtonHandle" text="Powrót" />
-      <Button layoutX="632.0" layoutY="78.0" mnemonicParsing="false" onAction="#displayAllProducts" prefHeight="31.0" prefWidth="173.0" text="Wyświetl wszystkie produkty">
+      <Button fx:id="buttonBack" layoutX="486.0" layoutY="650.0" mnemonicParsing="false" onAction="#backButtonHandle" text="Powrót" />
+      <Button layoutX="681.0" layoutY="160.0" mnemonicParsing="false" onAction="#displayAllProducts" prefHeight="31.0" prefWidth="173.0" text="Wyświetl wszystkie produkty">
          <font>
             <Font size="12.0" />
          </font>
       </Button>
-      <Pane layoutX="14.0" layoutY="14.0" prefHeight="370.0" prefWidth="347.0" style="-fx-background-color: white; -fx-border-color: gray;">
+      <Pane layoutX="69.0" layoutY="199.0" prefHeight="370.0" prefWidth="347.0" style="-fx-background-color: white; -fx-border-color: gray;">
          <children>
             <TextField fx:id="tfNameAdd" layoutX="104.0" layoutY="72.0" prefHeight="31.0" prefWidth="133.0" promptText="Nazwa produktu" />
             <TextField fx:id="tfKcal" layoutX="104.0" layoutY="118.0" prefHeight="31.0" prefWidth="133.0" promptText="Kcal" />
@@ -37,7 +37,11 @@
             <Button fx:id="buttonAdd" layoutX="141.0" layoutY="206.0" mnemonicParsing="false" onAction="#buttonHandler" text="Dodaj" />
             <Label layoutX="104.0" layoutY="26.0" text="Dodaj nowy produkt" />
          </children></Pane>
-      <Label layoutX="520.0" layoutY="36.0" prefHeight="21.0" prefWidth="133.0" text="Wyszukaj produkt" />
+      <Label layoutX="420.0" layoutY="127.0" prefHeight="21.0" prefWidth="133.0" text="Wyszukaj produkt" />
+      <Label layoutX="463.0" layoutY="33.0" text="Produkty">
+         <font>
+            <Font size="24.0" />
+         </font></Label>
 
    </children>
 </AnchorPane>

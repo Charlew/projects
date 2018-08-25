@@ -1,24 +1,13 @@
 package Products;
-import DbConnection.ConnectionManager;
-import Login.LoginController;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-
-import javax.swing.*;
-import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ResourceBundle;
 
 public class ProductsController extends ProductsDAO{
 
@@ -26,11 +15,11 @@ public class ProductsController extends ProductsDAO{
     @FXML private Button buttonAdd, buttonBack, buttonSearch;
     @FXML private Label labelUsername;
 
-    @FXML private TableColumn<Products, String> colProdName;
-    @FXML private TableColumn<Products, Integer> colProdKcal;
-    @FXML private TableColumn<Products, Integer> colProdAmount;
-    @FXML private TableColumn<Products, String> colProdUsername;
-    @FXML private TableView productsTable;
+    @FXML protected TableColumn<Products, String> colProdName;
+    @FXML protected TableColumn<Products, Integer> colProdKcal;
+    @FXML protected TableColumn<Products, Integer> colProdAmount;
+    @FXML protected TableColumn<Products, String> colProdUsername;
+    @FXML protected TableView productsTable;
 
      public void initialize() {
          try {
@@ -47,29 +36,36 @@ public class ProductsController extends ProductsDAO{
         }
     }
 
-    private void populateTable(ObservableList<Products> productsList){
+    protected void populateTable(ObservableList<Products> productsList){
         productsTable.setItems(productsList);
     }
 
     @FXML void buttonHandler(ActionEvent event) throws SQLException, ClassNotFoundException {
-        if(event.getSource() == buttonAdd){
-            insertNewProduct(tfNameAdd.getText(), tfKcal.getText(), tfAmount.getText());
-            tfNameAdd.setText("");
-            tfKcal.setText("");
-            tfAmount.setText("");
-            ObservableList<Products> productsList = getAllRecords();
-            populateTable(productsList);
-        }else if(event.getSource() == buttonSearch){
+        if(event.getSource() == buttonAdd) {
+            if(!(tfNameAdd.getText().isEmpty() && tfKcal.getText().isEmpty() && tfAmount.getText().isEmpty())){
+                insertNewProduct(tfNameAdd.getText(), tfKcal.getText(), tfAmount.getText());
+                tfNameAdd.setText("");
+                tfKcal.setText("");
+                tfAmount.setText("");
+                ObservableList<Products> productsList = getAllRecords();
+                populateTable(productsList);
+            }else{
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Błąd");
+                alert.setHeaderText("Puste pola!");
+                alert.setContentText("Sprawdź czy wprowadzono wszystkie potrzebne dane");
+                alert.showAndWait();
+            }
+
 
         }
     }
 
+
     @FXML void searchProduct(ActionEvent event) throws ClassNotFoundException, SQLException{
         ObservableList<Products> list = searchProduct(tfNameSearch.getText());
-        if(list.size() > 0){
+        if(list.size() > 0) {
             populateTable(list);
-        }else{
-
         }
     }
 
