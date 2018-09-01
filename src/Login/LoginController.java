@@ -12,20 +12,21 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 
-
+/** Logowanie */
 public class LoginController extends LoginDAO{
+
+    /**
+     * Variables
+     */
     @FXML private TextField txtUsername;
-    @FXML PasswordField txtPassword;
+    @FXML private PasswordField txtPassword;
     @FXML private Button buttonBack;
 
-    @FXML void backToMainPage(ActionEvent event) throws Exception{
-        Stage stage = (Stage) buttonBack.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("../sample/sample.fxml"));
-        Scene scene = new Scene(root, 1024, 768);
-        stage.setScene(scene);
-        stage.show();
-    }
+    /**
+     * Functions
+     */
 
+    /** Obsługa logowania */
     @FXML void Login(ActionEvent actionEvent) throws Exception{
         try {
             if(isLogin(txtUsername.getText(), txtPassword.getText())){
@@ -40,8 +41,9 @@ public class LoginController extends LoginDAO{
 
             }else if(txtUsername.getText().isEmpty() || txtPassword.getText().isEmpty()){
                 Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Rejestracja");
+                alert.setTitle("Logowanie");
                 alert.setHeaderText("Wprowadź wszystkie dane!");
+                alert.showAndWait();
             }else{
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Błąd");
@@ -52,5 +54,14 @@ public class LoginController extends LoginDAO{
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /** Powrót do poprzedniej strony */
+    @FXML void backToMainPage(ActionEvent event) throws Exception{
+        Stage stage = (Stage) buttonBack.getScene().getWindow();
+        Parent root = FXMLLoader.load(getClass().getResource("../sample/sample.fxml"));
+        Scene scene = new Scene(root, 1024, 768);
+        stage.setScene(scene);
+        stage.show();
     }
 }

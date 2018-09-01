@@ -9,22 +9,33 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import java.sql.*;
 
+/** Rejestracja */
 public class RegisterController extends RegisterDAO{
+
+    /**
+     * Variables
+     */
     @FXML private TextField txtEmail, txtUsername;
-    @FXML PasswordField txtPassword, txtConfirmPassword;
+    @FXML private PasswordField txtPassword, txtConfirmPassword;
     @FXML private Label labelRegister;
     @FXML private Button buttonBack;
 
+    /**
+     * Functions
+     */
+    /** Rejestracja nowego usera */
     @FXML void Register(ActionEvent actionEvent) throws Exception{
         try{
             if(txtEmail.getText().isEmpty() || txtUsername.getText().isEmpty() || txtPassword.getText().isEmpty() || txtConfirmPassword.getText().isEmpty()){
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Rejestracja");
                 alert.setHeaderText("Wprowadź wszystkie dane!");
+                alert.showAndWait();
             }else if(txtConfirmPassword.getText() != txtPassword.getText()){
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Rejestracja");
                 alert.setHeaderText("Podane hasła różnią się!");
+                alert.showAndWait();
             } else if(checkUserExists(txtUsername.getText())){
                 labelRegister.setText("Istnieje już użytkownik o podanej nazwie");
             }else{
@@ -54,6 +65,7 @@ public class RegisterController extends RegisterDAO{
         }
     }
 
+    /** Powrót do poprzedniej strony */
     @FXML void backToMainPage(ActionEvent event) throws Exception{
         Stage stage = (Stage) buttonBack.getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("../sample/sample.fxml"));

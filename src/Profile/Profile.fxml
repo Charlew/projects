@@ -18,7 +18,7 @@
       <Label layoutX="163.0" layoutY="278.0" text="Waga" />
       <Label layoutX="163.0" layoutY="348.0" text="Wzrost" />
       <Label layoutX="163.0" layoutY="418.0" prefHeight="33.0" prefWidth="226.0" text="Zapotrzebowanie kalorycze (BMR)" />
-      <Button fx:id="buttonCountKcal" layoutX="409.0" layoutY="464.0" mnemonicParsing="false" onAction="#buttonCountKcalHandler" text="Wylicz z powyższych danych" />
+      <Button fx:id="buttonCountKcal" layoutX="409.0" layoutY="464.0" mnemonicParsing="false" onAction="#countKcal" text="Wylicz z powyższych danych" />
       <CheckBox fx:id="checkboxMale" layoutX="249.0" layoutY="128.0" mnemonicParsing="false" onAction="#handleCheckBoxMale" text="Mężczyzna" />
       <CheckBox fx:id="checkboxFemale" layoutX="249.0" layoutY="155.0" mnemonicParsing="false" onAction="#handleCheckBoxFemale" text="Kobieta" />
       <TextField fx:id="tfAge" layoutX="249.0" layoutY="206.0" prefHeight="31.0" prefWidth="65.0" />
@@ -28,6 +28,6 @@
       <Label layoutX="321.0" layoutY="348.0" text="cm" />
       <TextField fx:id="tfKcal" layoutX="450.0" layoutY="423.0" prefHeight="31.0" prefWidth="125.0" />
       <Button fx:id="buttonBack" layoutX="389.0" layoutY="544.0" mnemonicParsing="false" onAction="#backButtonHandle" text="Powrót" />
-      <Button fx:id="buttonSave" layoutX="575.0" layoutY="544.0" mnemonicParsing="false" onAction="#buttonSaveHandler" text="Zapisz" />
+      <Button fx:id="buttonSave" layoutX="575.0" layoutY="544.0" mnemonicParsing="false" onAction="#save" text="Zapisz" />
    </children>
 </AnchorPane>

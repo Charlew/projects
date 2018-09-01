@@ -51,6 +51,8 @@
       <Label layoutX="42.0" layoutY="533.0" text="Suma kcal " />
       <TextField fx:id="tfKcalRemain" layoutX="123.0" layoutY="567.0" prefHeight="31.0" prefWidth="152.0" />
       <Label layoutX="42.0" layoutY="572.0" text="Pozostało" />
-      <Button layoutX="553.0" layoutY="666.0" mnemonicParsing="false" onAction="#saveDiary" text="Zapisz" />
+      <Button layoutX="481.0" layoutY="666.0" mnemonicParsing="false" onAction="#saveDiary" text="Zapisz" />
+      <Button fx:id="buttonDeleteOne" layoutX="717.0" layoutY="610.0" mnemonicParsing="false" onAction="#deleteFood" text="Usuń wybrany" />
+      <Button fx:id="buttonDeleteAll" layoutX="578.0" layoutY="610.0" mnemonicParsing="false" onAction="#deleteFood" text="Usuń wszystko" />
    </children>
 </AnchorPane>

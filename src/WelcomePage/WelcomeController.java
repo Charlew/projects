@@ -10,14 +10,24 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import java.io.IOException;
 
+/** Głowna scena (Powitalna) */
 public class WelcomeController{
+
+    /**
+     * Variables
+     */
     @FXML private Label labelWelcome;
     @FXML private Button buttonProducts, buttonProfile, buttonRecipes, buttonDiary, buttonLogout;
 
+    /**
+     * Functions
+     */
+    /** Wyswietlanie username */
     public void getUsernameLabel(String user) {
          labelWelcome.setText("Witaj " + user + "!");
      }
 
+    /** Wybór opcji przejsica do innej sceny */
     public void goTo(ActionEvent event) throws IOException {
         try{
             if(event.getSource() == buttonProducts){

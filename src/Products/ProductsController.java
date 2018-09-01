@@ -9,46 +9,58 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import java.sql.SQLException;
 
+/** Produkty */
 public class ProductsController extends ProductsDAO{
 
+    /**
+     * Variables
+     */
     @FXML private TextField tfNameAdd, tfKcal, tfAmount, tfNameSearch;
-    @FXML private Button buttonAdd, buttonBack, buttonSearch;
-    @FXML private Label labelUsername;
+    @FXML private Button buttonAdd, buttonBack;
 
-    @FXML protected TableColumn<Products, String> colProdName;
-    @FXML protected TableColumn<Products, Integer> colProdKcal;
-    @FXML protected TableColumn<Products, Integer> colProdAmount;
-    @FXML protected TableColumn<Products, String> colProdUsername;
-    @FXML protected TableView productsTable;
+    @FXML protected TableView productsTable;                        // Tabela produktów
+    @FXML protected TableColumn<Products, String> colProdName;      // Kolumna Nazwa
+    @FXML protected TableColumn<Products, Integer> colProdKcal;     // Kolumna Kcal
+    @FXML protected TableColumn<Products, Integer> colProdAmount;   // Kolumna Ilość
+    @FXML protected TableColumn<Products, String> colProdUsername;  // Kolumna Dodane przez
 
-     public void initialize() {
-         try {
-            colProdName.setCellValueFactory(cellData -> cellData.getValue().getProductName());
-            colProdKcal.setCellValueFactory(cellData -> cellData.getValue().getProductKcal().asObject());
-            colProdAmount.setCellValueFactory(cellData -> cellData.getValue().getProductAmount().asObject());
-            colProdUsername.setCellValueFactory(cellData -> cellData.getValue().getProductUsername());
-            ObservableList<Products> productsList = getAllRecords();
-            populateTable(productsList);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
+    /**
+     * Functions
+     */
+     public void initialize() throws ClassNotFoundException, SQLException{
+         /* Inicjalizacja tabeli produktów */
+         colProdName.setCellValueFactory(cellData -> cellData.getValue().getProductName());
+         colProdKcal.setCellValueFactory(cellData -> cellData.getValue().getProductKcal().asObject());
+         colProdAmount.setCellValueFactory(cellData -> cellData.getValue().getProductAmount().asObject());
+         colProdUsername.setCellValueFactory(cellData -> cellData.getValue().getProductUsername());
+         ObservableList<Products> productsList = getAllRecords();
+         populateTable(productsList);
     }
 
+    /** Zapelnianie tabeli produktow */
     protected void populateTable(ObservableList<Products> productsList){
         productsTable.setItems(productsList);
     }
 
-    @FXML void buttonHandler(ActionEvent event) throws SQLException, ClassNotFoundException {
+    /** Dodawanie nowego produktu */
+    @FXML void addProduct(ActionEvent event) throws SQLException, ClassNotFoundException {
         if(event.getSource() == buttonAdd) {
             if(!(tfNameAdd.getText().isEmpty() && tfKcal.getText().isEmpty() && tfAmount.getText().isEmpty())){
-                insertNewProduct(tfNameAdd.getText(), tfKcal.getText(), tfAmount.getText());
-                tfNameAdd.setText("");
-                tfKcal.setText("");
-                tfAmount.setText("");
-                ObservableList<Products> productsList = getAllRecords();
-                populateTable(productsList);
+                if(!validateIfProductExist(tfNameAdd.getText())){
+                    insertNewProduct(tfNameAdd.getText(), tfKcal.getText(), tfAmount.getText());
+                    tfNameAdd.setText("");
+                    tfKcal.setText("");
+                    tfAmount.setText("");
+                    ObservableList<Products> productsList = getAllRecords();
+                    populateTable(productsList);
+                }else{
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Błąd");
+                    alert.setContentText("Istnieje już w bazie produkt o podanej nazwie");
+                    alert.showAndWait();
+                }
+
             }else{
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Błąd");
@@ -61,7 +73,7 @@ public class ProductsController extends ProductsDAO{
         }
     }
 
-
+    /** Wyszukiwanie produktu po nazwie */
     @FXML void searchProduct(ActionEvent event) throws ClassNotFoundException, SQLException{
         ObservableList<Products> list = searchProduct(tfNameSearch.getText());
         if(list.size() > 0) {
@@ -69,12 +81,13 @@ public class ProductsController extends ProductsDAO{
         }
     }
 
+    /** Wyswietlanie wszystkich produktow */
     @FXML void displayAllProducts(ActionEvent event) throws ClassNotFoundException, SQLException{
         ObservableList<Products> productsList = getAllRecords();
         populateTable(productsList);
     }
 
-
+    /** Powrot do poprzedniej strony */
     @FXML void backButtonHandle(ActionEvent event) throws Exception{
         Stage stage = (Stage) buttonBack.getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("../WelcomePage/Welcome.fxml"));

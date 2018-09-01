@@ -1,32 +1,21 @@
 package Products;
-
 import DbConnection.ConnectionManager;
 import Login.LoginController;
+import Login.LoginDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ProductsDAO {
-    LoginController loginController = new LoginController();
+    LoginDAO loginDAO = new LoginDAO();
 
-    protected  void insertNewProduct(String name, String kcal, String amount){
-        PreparedStatement preparedStatement = null;
-        try{
-            preparedStatement = ConnectionManager.getConnection().prepareStatement("INSERT IGNORE INTO products SET id_user = ?, name = ?, kcal = ?, amount = ?, username = ?;");
-            preparedStatement.setString(1, loginController.getUserId().toString());
-            preparedStatement.setString(2, name);
-            preparedStatement.setString(3, kcal);
-            preparedStatement.setString(4, amount);
-            preparedStatement.setString(5, loginController.getUsername());
-
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
+    /**
+     * Functions
+     */
+    /** Pobieranie wszystkich produktów z bazy i dodanie ich do ObservableList */
     public static ObservableList<Products> getAllRecords() throws ClassNotFoundException, SQLException{
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -60,6 +49,42 @@ public class ProductsDAO {
         return null;
     }
 
+    /** Dodawanie nowego produktu do bazy */
+    protected  void insertNewProduct(String name, String kcal, String amount){
+        PreparedStatement preparedStatement = null;
+        try{
+                preparedStatement = ConnectionManager.getConnection().prepareStatement("INSERT IGNORE INTO products SET id_user = ?, name = ?, kcal = ?, amount = ?, username = ?;");
+                preparedStatement.setString(1, loginDAO.getUserId().toString());
+                preparedStatement.setString(2, name);
+                preparedStatement.setString(3, kcal);
+                preparedStatement.setString(4, amount);
+                preparedStatement.setString(5, loginDAO.getUsername());
+
+                preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /** Walidacja przy dodawaniu nowego produktu */
+    protected Boolean validateIfProductExist(String name){
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Boolean found = false;
+        try{
+            preparedStatement = ConnectionManager.getConnection().prepareStatement("SELECT * FROM products WHERE name = ? ");
+            preparedStatement.setString(1, name);
+            resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                found = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return found;
+    }
+
+    /** Wyszukiwanie produktu po nazwie */
     protected static ObservableList<Products> searchProduct(String name) throws ClassNotFoundException, SQLException{
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;

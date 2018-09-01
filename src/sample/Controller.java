@@ -9,12 +9,19 @@ import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
+/** Scena startowa */
 public class Controller {
 
+    /**
+     * Variables
+     */
     @FXML private Button logIn, signIn;
-
     @FXML void handleClose(MouseEvent event){ System.exit(0); }
 
+    /**
+     * Functions
+     */
+    /** Wybór opcji przejsica do innej sceny */
     public void goToPage(ActionEvent event) throws Exception {
         if(event.getSource() == logIn){
             Stage stage = (Stage) logIn.getScene().getWindow();

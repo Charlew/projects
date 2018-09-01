@@ -19,7 +19,7 @@
     </TableView>
    <TextField fx:id="tfNameRecipe" layoutX="26.0" layoutY="241.0" prefHeight="31.0" prefWidth="397.0" />
    <Label layoutX="26.0" layoutY="220.0" prefHeight="21.0" prefWidth="118.0" text="Nazwa potrawy" />
-   <Label layoutX="32.0" layoutY="35.0" prefHeight="21.0" prefWidth="341.0" text="Wybierz produkt z tabeli aby dodać go do przepisu" />
+   <Label layoutX="30.0" layoutY="42.0" prefHeight="21.0" prefWidth="437.0" text="Kliknij dwukrotnie na produkt w tabeli aby dodać go do przepisu" />
    <Label layoutX="85.0" layoutY="279.0" prefHeight="21.0" prefWidth="134.0" text="Dodawany produkt" />
    <TextField fx:id="tfNameProduct" layoutX="115.0" layoutY="318.0" prefHeight="31.0" prefWidth="143.0" />
    <Label layoutX="33.0" layoutY="323.0" text="Nazwa" />

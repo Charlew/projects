@@ -34,7 +34,7 @@
             <TextField fx:id="tfNameAdd" layoutX="104.0" layoutY="72.0" prefHeight="31.0" prefWidth="133.0" promptText="Nazwa produktu" />
             <TextField fx:id="tfKcal" layoutX="104.0" layoutY="118.0" prefHeight="31.0" prefWidth="133.0" promptText="Kcal" />
              <TextField fx:id="tfAmount" layoutX="104.0" layoutY="161.0" prefHeight="31.0" prefWidth="133.0" promptText="Waga" />
-            <Button fx:id="buttonAdd" layoutX="141.0" layoutY="206.0" mnemonicParsing="false" onAction="#buttonHandler" text="Dodaj" />
+            <Button fx:id="buttonAdd" layoutX="141.0" layoutY="206.0" mnemonicParsing="false" onAction="#addProduct" text="Dodaj" />
             <Label layoutX="104.0" layoutY="26.0" text="Dodaj nowy produkt" />
          </children></Pane>
       <Label layoutX="420.0" layoutY="127.0" prefHeight="21.0" prefWidth="133.0" text="Wyszukaj produkt" />

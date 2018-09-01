@@ -13,12 +13,17 @@ import java.util.List;
 
 public class RecipesDAO {
 
+    /**
+     * Variablees
+     */
     LoginDAO loginDAO = new LoginDAO();
     private static String name;
     private static Integer allKcal;
     private static String description;
 
-
+    /**
+     * Getters * setters
+     */
     public String getName(){
         return name;
     }
@@ -29,7 +34,6 @@ public class RecipesDAO {
     public Integer getAllKcal(){
         return allKcal;
     }
-
     public void setAllKcal(Integer allKcal){
         this.allKcal = allKcal;
     }
@@ -37,11 +41,14 @@ public class RecipesDAO {
     public String getDescription(){
         return description;
     }
-
     public void setDescription(String description){
         this.description = description;
     }
 
+    /**
+     * Functions
+     */
+    /** Pobieranie id danego przepisu */
     protected Integer getRecipeId(){
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -64,6 +71,7 @@ public class RecipesDAO {
         return idRecipe;
     }
 
+    /** Pobieranie wszystkich przepisow z bazy i dodanie ich do ObservableList */
     protected static ObservableList<Recipes> getAllRecords() throws ClassNotFoundException, SQLException {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -98,6 +106,7 @@ public class RecipesDAO {
         return null;
     }
 
+    /** Pobranie wszystkich skladnikow przepisu */
     protected String getIngredients(Integer idRecipe) {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -109,9 +118,9 @@ public class RecipesDAO {
             preparedStatement.setInt(1, idRecipe);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                PreparedStatement preparedStatement1 = ConnectionManager.getConnection().prepareStatement("SELECT * FROM products WHERE id_prod = ?");
-                preparedStatement1.setInt(1, resultSet.getInt("id_prod"));
-                ResultSet resultSet1 = preparedStatement1.executeQuery();
+                preparedStatement = ConnectionManager.getConnection().prepareStatement("SELECT * FROM products WHERE id_prod = ?");
+                preparedStatement.setInt(1, resultSet.getInt("id_prod"));
+                ResultSet resultSet1 = preparedStatement.executeQuery();
                 if (resultSet1.next()) {
                     ingredients.add(resultSet1.getString("name"));
                 }
@@ -120,14 +129,35 @@ public class RecipesDAO {
             e.printStackTrace();
         }
         formattedString = ingredients.toString()
-                .replace(",", "\n")  //remove the commas
-                .replace("[", "\t")  //remove the right bracket
-                .replace("]", "\t")  //remove the left bracket
+                .replace(",", "\n")
+                .replace("[", "\t")
+                .replace("]", "\t")
                 .trim();
 
         return formattedString;
     }
 
+    /** Walidacja przy dodawaniu nowego przepisu */
+    protected Boolean validateIfRecipeExists(String name){
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Boolean found = false;
+        try{
+            preparedStatement = ConnectionManager.getConnection().prepareStatement("SELECT * FROM recipes WHERE name = ?");
+            preparedStatement.setString(1, name);
+            resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                found = true;
+            }else{
+                found = false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return found;
+    }
+
+    /** Dodawanie przepisu */
     protected void addRecipe(String name, Integer allKcal, String description){
         PreparedStatement preparedStatement = null;
         try{
@@ -150,9 +180,9 @@ public class RecipesDAO {
         }
     }
 
+    /** Dodanie id przepisu i produktu do tabeli laczacej */
     protected void addRecipesProducts(String productName){
         PreparedStatement preparedStatement = null;
-//        PreparedStatement preparedStatement1 = null;
         ResultSet resultSet = null;
         try{
             preparedStatement = ConnectionManager.getConnection().prepareStatement("SELECT * FROM products WHERE name = ?");
@@ -160,8 +190,6 @@ public class RecipesDAO {
             resultSet = preparedStatement.executeQuery();
 
             while(resultSet.next()){
-
-                System.out.println("NAME:" + resultSet.getString("name"));
                 preparedStatement = ConnectionManager.getConnection()
                         .prepareStatement("INSERT IGNORE INTO recipes_products SET id_recipe = ?, id_prod = ?;");
                 preparedStatement.setInt(1, getRecipeId());
@@ -174,6 +202,7 @@ public class RecipesDAO {
         }
     }
 
+    /** Pobranie komentarzy dla wybranego przepisu */
     protected String getAllComments(int idRecipe){
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -201,6 +230,7 @@ public class RecipesDAO {
 
     }
 
+    /** Dodawanie komentarza */
     protected void addComment(Integer idRecipe, String content){
         PreparedStatement preparedStatement = null;
         try{
@@ -214,21 +244,4 @@ public class RecipesDAO {
             e.printStackTrace();
         }
     }
-
-//    protected String showRecipeUsername(Integer idRecipe){
-//        PreparedStatement preparedStatement = null;
-//        ResultSet resultSet = null;
-//        try{
-//            preparedStatement = ConnectionManager.getConnection()
-//                    .prepareStatement("SELECT username FROM recipes WHERE id_recipe = ?");
-//            preparedStatement.setInt(1, idRecipe);
-//            resultSet = preparedStatement.executeQuery();
-//            if(resultSet.next()){
-//                return resultSet.getString("username");
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
 }

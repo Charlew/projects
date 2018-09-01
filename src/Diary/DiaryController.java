@@ -1,6 +1,5 @@
 package Diary;
 
-import Login.LoginController;
 import Login.LoginDAO;
 import Products.*;
 import Recipes.Recipes;
@@ -22,28 +21,43 @@ import javafx.stage.Stage;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+/** Dziennik żywienia */
 public class DiaryController extends RecipesModalController{
-    LoginDAO loginDAO = new LoginDAO();
-    DiaryDAO diaryDAO = new DiaryDAO();
-    ProductsDAO productsDAO = new ProductsDAO();
-    List<String> recipesToDiaryList = new ArrayList<>();
-    List<String> productsToDiaryList = new ArrayList<>();
-    List<Integer> productsToDiaryKcal = new ArrayList<>();
-    ObservableList<Food> diaryList = diaryDAO.getAllRecords();
+
+    /**
+     *  Variables
+     */
+    LoginDAO loginDAO                   = new LoginDAO();
+    DiaryDAO diaryDAO                   = new DiaryDAO();
+    ProductsDAO productsDAO             = new ProductsDAO();
+
+    List<String> recipesToDiaryList     = new ArrayList<>();    //Lista przepisów
+    List<String> productsToDiaryList    = new ArrayList<>();    //Lista produktów
+    List<Integer> productsToDiaryKcal   = new ArrayList<>();    //Pomocnicza lista dla ustawiania kalorii produktu z tabeli produktów
+
+    ObservableList<Food> diaryList      = diaryDAO.getAllRecords(); //Lista przepisow i produktow w dzienniku
 
     Integer kcalSum = 0;
-    @FXML Button buttonBack;
+
+    @FXML Button buttonBack, buttonDeleteAll, buttonDeleteOne;
     @FXML TextField tfKcalSum, tfKcalRemain;
     @FXML public  TableColumn<Food, String> colName;
     @FXML public  TableColumn<Food, Integer> colKcal;
     @FXML public  TableView<Food>  diaryTable;
 
+    /**
+     * Constructors
+     */
     public DiaryController() throws SQLException, ClassNotFoundException {
     }
 
+    /**
+     * Functions
+     */
     public void initialize() throws ClassNotFoundException, SQLException {
-        //Products Table
+        /* Inicjalizacja tabeli produktów */
         colProdName.setCellValueFactory(cellData -> cellData.getValue().getProductName());
         colProdKcal.setCellValueFactory(cellData -> cellData.getValue().getProductKcal().asObject());
         colProdAmount.setCellValueFactory(cellData -> cellData.getValue().getProductAmount().asObject());
@@ -59,6 +73,7 @@ public class DiaryController extends RecipesModalController{
         tfKcalSum.setText(diaryDAO.getEatenKcal().toString());
         tfKcalRemain.setText(String.valueOf(loginDAO.getKcalDemand() - Integer.parseInt(tfKcalSum.getText())));
 
+        /* Operacje przy kliknieciu na dany wiersz w tabeli produktów*/
         productsTable.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -82,24 +97,25 @@ public class DiaryController extends RecipesModalController{
                 }
             }
         });
-        //Recipes Table
+        /* Inicjalizacja tabeli przepisow */
         colRecName.setCellValueFactory(cellData -> cellData.getValue().getRecipeName());
         colRecAllKcal.setCellValueFactory(cellData -> cellData.getValue().getRecipeAllKcal().asObject());
         colRecUsername.setCellValueFactory(cellData -> cellData.getValue().getRecipeUsername());
         ObservableList<Recipes> recipesList = getAllRecords();
         populateRecipesTable(recipesList);
 
-        //Food Table
+        /* Inicjalizacja tabeli dziennika */
         colName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNameProperty()));
         colKcal.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getAllKcalProperty()).asObject());
         populateDiaryTable(diaryList);
     }
 
+    /** Zapełnianie tabeli */
     protected void populateDiaryTable(ObservableList<Food> diaryList){
         diaryTable.setItems(diaryList);
     }
 
-
+    /** Dodawanie produktu do dziennika */
     @FXML void addProductToDiary(ActionEvent event) throws SQLException, ClassNotFoundException {
         Food food = new Food();
         String name = tfNameProduct.getText();
@@ -123,6 +139,7 @@ public class DiaryController extends RecipesModalController{
         productsToDiaryKcal.add(colKcal.getCellObservableValue(food).getValue());
     }
 
+    /** Dodawanie przepisu do dziennika */
     @FXML void addRecipeToDiary(ActionEvent event) throws SQLException, ClassNotFoundException {
         if(recipesTable.getSelectionModel().getSelectedItem() != null) {
             Food food = new Food();
@@ -148,25 +165,62 @@ public class DiaryController extends RecipesModalController{
         }
     }
 
+    /** Zapisywanie dziennika */
     @FXML void saveDiary(ActionEvent event){
-        if(!recipesToDiaryList.isEmpty()){
-            for(int i = 0; i < recipesToDiaryList.size(); i++){
-                diaryDAO.saveRecipesInDiary(recipesToDiaryList.get(i).toString());
+        if(!recipesToDiaryList.isEmpty() || !productsToDiaryList.isEmpty()){
+            if(!recipesToDiaryList.isEmpty()){
+                for(int i = 0; i < recipesToDiaryList.size(); i++){
+                    diaryDAO.saveRecipesInDiary(recipesToDiaryList.get(i).toString());
+                }
+            }else{
+                System.out.println("Brak przepisow do dodania");
             }
-        }else{
-            System.out.println("Brak przepisow do dodania");
+
+            if(!productsToDiaryList.isEmpty()){
+                for(int i = 0; i < productsToDiaryList.size(); i++){
+                    diaryDAO.saveProductsInDiary(productsToDiaryList.get(i).toString(), productsToDiaryKcal.get(i));
+                }
+            }else{
+                System.out.println("Brak produktow do dodania");
+            }
+            diaryDAO.setEatenKcal(Integer.parseInt(tfKcalSum.getText()));
+        }else if(diaryTable.getItems().isEmpty()){
+            diaryDAO.deleteAllFoodFromDiary();
+            diaryDAO.setEatenKcal(0);
+
         }
 
-        if(!productsToDiaryList.isEmpty()){
-            for(int i = 0; i < productsToDiaryList.size(); i++){
-                diaryDAO.saveProductsInDiary(productsToDiaryList.get(i).toString(), productsToDiaryKcal.get(i));
-            }
-        }else{
-            System.out.println("Brak produktow do dodania");
-        }
-        diaryDAO.setEatenKcal(Integer.parseInt(tfKcalSum.getText()));
+
     }
 
+    /** Usuwanie wybranego jedzenia z tabeli dziennika */
+    @FXML void deleteFood(ActionEvent event){
+        if(event.getSource() == buttonDeleteAll){
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setHeaderText("Uwaga");
+            alert.setContentText("Czy na pewno chcesz usunąć wszystko z dziennika?");
+            Optional<ButtonType> result = alert.showAndWait();
+            if(!result.isPresent()){
+                System.out.println("Wyjscie");
+            }else if(result.get() == ButtonType.OK){
+                diaryTable.getItems().clear();
+                kcalSum = 0;
+                tfKcalSum.setText(kcalSum.toString());
+                tfKcalRemain.setText(String.valueOf(loginDAO.getKcalDemand() - kcalSum));
+            }else if(result.get() == ButtonType.CANCEL){
+                System.out.println("canceled");
+            }
+        }else if(event.getSource() == buttonDeleteOne){
+                Food selected = diaryTable.getSelectionModel().getSelectedItem();
+                kcalSum -= selected.getAllKcalProperty();
+                tfKcalSum.setText(kcalSum.toString());
+                tfKcalRemain.setText(String.valueOf(loginDAO.getKcalDemand() - kcalSum));
+                diaryTable.getItems().removeAll(diaryTable.getSelectionModel().getSelectedItem());
+            }
+
+    }
+
+    /** Powrót do poprzedniej strony */
     @FXML void backButtonHandle(ActionEvent event) throws Exception{
         Stage stage = (Stage) buttonBack.getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("../WelcomePage/Welcome.fxml"));

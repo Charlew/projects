@@ -7,26 +7,27 @@ import java.sql.*;
 public class RegisterDAO {
     Connection connection;
 
+    /**
+     * Functions
+     */
+    /** Sprawdzanie czy istnieje juz taki user */
     public boolean checkUserExists(String username){
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         boolean usernameExists = false;
 
         try{
-            connection = ConnectionManager.getConnection();
-            Statement statement = connection.createStatement();
-            statement.executeUpdate("CREATE TABLE IF NOT EXISTS users(id_user INT NOT NULL AUTO_INCREMENT , username VARCHAR(24),email VARCHAR(24), password VARCHAR(24), PRIMARY KEY (ID))");
-
-            preparedStatement = connection.prepareStatement("SELECT * FROM users ORDER BY username desc");
+            preparedStatement = ConnectionManager.getConnection().prepareStatement("SELECT * FROM users ORDER BY username desc");
             resultSet = preparedStatement.executeQuery();
 
             String value;
             while(resultSet.next()){
                 value = resultSet.getString("username");
-                System.out.println(value);
                 if(value.equals(username)){
                     System.out.println("Istnieje juz taki uzytkownik w bazie danych");
                     usernameExists = true;
+                }else{
+                    usernameExists = false;
                 }
             }
         }catch(SQLException e){
@@ -35,6 +36,7 @@ public class RegisterDAO {
         return usernameExists;
     }
 
+    /** Dodawanie nowego usera */
     public void addUser(String username, String email, String password) throws SQLException{
         PreparedStatement preparedStatement = null;
         try{

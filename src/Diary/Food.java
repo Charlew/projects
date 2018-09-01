@@ -5,16 +5,26 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+/** Klasa pomocnicza dla dziennika */
 public class Food {
 
+    /**
+     * Variables
+     */
     private StringProperty nameProperty;
     private IntegerProperty kcalProperty;
 
+    /**
+     * Constructors
+     */
     public Food(){
         this.nameProperty = new SimpleStringProperty();
         this.kcalProperty = new SimpleIntegerProperty();
     }
 
+    /**
+     * Getters & setters
+     */
     public String getNameProperty() {
         return nameProperty.get();
     }

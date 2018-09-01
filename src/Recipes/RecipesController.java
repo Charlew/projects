@@ -13,63 +13,56 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import java.sql.SQLException;
 
+/** Przepisy */
 public class RecipesController extends RecipesDAO{
 
-    @FXML private Button buttonBack;
-
-    //Recipes
-    @FXML protected TableColumn<Recipes, String> colRecName;
-    @FXML protected TableColumn<Recipes, Integer> colRecAllKcal;
-    @FXML protected TableColumn<Recipes, String> colRecUsername;
+    /**
+     * Variables
+     */
+    @FXML protected TableView<Recipes> recipesTable;                // Tabela przepisów
+    @FXML protected TableColumn<Recipes, String> colRecName;        // Kolumna Nazwa
+    @FXML protected TableColumn<Recipes, Integer> colRecAllKcal;    // Kolumna Kcal
+    @FXML protected TableColumn<Recipes, String> colRecUsername;    // Kolumna Dodane przez
     @FXML private TextArea taIngredients;
     @FXML private TextArea taDescription;
     @FXML private TextArea taComment;
     @FXML private TextArea taAllComments;
-    @FXML protected TableView<Recipes> recipesTable;
+    @FXML private Button buttonBack;
 
+    /**
+     * Functions
+     */
     public void initialize() throws SQLException, ClassNotFoundException {
-        try {
-            //Recipes Table
-            colRecName.setCellValueFactory(cellData -> cellData.getValue().getRecipeName());
-            colRecAllKcal.setCellValueFactory(cellData -> cellData.getValue().getRecipeAllKcal().asObject());
-            colRecUsername.setCellValueFactory(cellData -> cellData.getValue().getRecipeUsername());
-            ObservableList<Recipes> recipesList = getAllRecords();
-            populateRecipesTable(recipesList);
-            taDescription.setEditable(false);
-            taIngredients.setEditable(false);
-            taAllComments.setEditable(false);
+        /* Inicjalizacja tabeli przepisów */
+        colRecName.setCellValueFactory(cellData -> cellData.getValue().getRecipeName());
+        colRecAllKcal.setCellValueFactory(cellData -> cellData.getValue().getRecipeAllKcal().asObject());
+        colRecUsername.setCellValueFactory(cellData -> cellData.getValue().getRecipeUsername());
+        ObservableList<Recipes> recipesList = getAllRecords();
+        populateRecipesTable(recipesList);
+        taDescription.setEditable(false);
+        taIngredients.setEditable(false);
+        taAllComments.setEditable(false);
 
-            recipesTable.setOnMousePressed(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    if(recipesTable.getSelectionModel().getSelectedItem() != null){
-                        Recipes selectedRecipe = recipesTable.getSelectionModel().getSelectedItem();
-                        taDescription.setText(selectedRecipe.getDescription());
-                        taIngredients.setText(getIngredients(selectedRecipe.getIdRecipe()));
-                        taAllComments.setText(getAllComments(selectedRecipe.getIdRecipe()));
-                    }
+        /* Operacje przy kliknieciu na dany wiersz w tabeli przepisów */
+        recipesTable.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if(recipesTable.getSelectionModel().getSelectedItem() != null){
+                    Recipes selectedRecipe = recipesTable.getSelectionModel().getSelectedItem();
+                    taDescription.setText(selectedRecipe.getDescription());
+                    taIngredients.setText(getIngredients(selectedRecipe.getIdRecipe()));
+                    taAllComments.setText(getAllComments(selectedRecipe.getIdRecipe()));
                 }
-            });
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+            }
+        });
     }
 
+    /** Zapełnienie tabeli przepisów */
     protected void populateRecipesTable(ObservableList<Recipes> recipesList){
         recipesTable.setItems(recipesList);
     }
 
-    @FXML void backButtonHandle(ActionEvent event) throws Exception{
-        Stage stage = (Stage) buttonBack.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("../WelcomePage/Welcome.fxml"));
-        Scene scene = new Scene(root, 1024, 768);
-        stage.setScene(scene);
-        stage.show();
-    }
-
+    /** Dodawanie nowego przepisu */
     @FXML void addNewRecipe(ActionEvent event) throws Exception{
         Stage primaryStage = new Stage();
         FXMLLoader loader = new FXMLLoader();
@@ -79,6 +72,7 @@ public class RecipesController extends RecipesDAO{
         primaryStage.show();
     }
 
+    /** Dodawanie komentarza */
     @FXML void addComment(ActionEvent event){
         if(recipesTable.getSelectionModel().getSelectedItem() != null) {
             Recipes selectedRecipe = recipesTable.getSelectionModel().getSelectedItem();
@@ -87,5 +81,14 @@ public class RecipesController extends RecipesDAO{
                 taAllComments.setText(getAllComments(selectedRecipe.getIdRecipe()));
             }
         }
+    }
+
+    /** Powrót do poprzedniej strony */
+    @FXML void backButtonHandle(ActionEvent event) throws Exception{
+        Stage stage = (Stage) buttonBack.getScene().getWindow();
+        Parent root = FXMLLoader.load(getClass().getResource("../WelcomePage/Welcome.fxml"));
+        Scene scene = new Scene(root, 1024, 768);
+        stage.setScene(scene);
+        stage.show();
     }
 }

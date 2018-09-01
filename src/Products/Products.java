@@ -6,18 +6,28 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class Products {
+
+    /**
+     * Variables
+     */
     private StringProperty nameProperty;
     private IntegerProperty kcalProperty;
     private IntegerProperty amountProperty;
     private StringProperty usernameProperty;
 
+    /**
+     * Constructors
+     */
     public Products(){
-        this.nameProperty = new SimpleStringProperty();
-        this.kcalProperty = new SimpleIntegerProperty();
-        this.amountProperty = new SimpleIntegerProperty();
-        this.usernameProperty = new SimpleStringProperty();
+        this.nameProperty       = new SimpleStringProperty();
+        this.kcalProperty       = new SimpleIntegerProperty();
+        this.amountProperty     = new SimpleIntegerProperty();
+        this.usernameProperty   = new SimpleStringProperty();
     }
-    // NAME
+
+    /**
+     * Getters & setters
+     */
     public String getName(){
         return nameProperty.get();
     }
@@ -28,19 +38,16 @@ public class Products {
         return nameProperty;
     }
 
-    // KCAL
     public Integer getKcal(){
         return kcalProperty.get();
     }
     public void setKcalProperty(Integer kcal){
         this.kcalProperty.set(kcal);
     }
-
     public IntegerProperty getProductKcal() {
         return kcalProperty;
     }
 
-    // AMOUNT
     public Integer getAmount(){
         return amountProperty.get();
     }
@@ -51,7 +58,6 @@ public class Products {
         return amountProperty;
     }
 
-    // USERNAME
     public String getUsername(){
         return usernameProperty.get();
     }

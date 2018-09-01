@@ -4,14 +4,21 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/** Połaczenie z baza danych */
 public class ConnectionManager {
-    private static String dbName = "CookBook";
-    private static String url = "jdbc:mysql://localhost/";
-    private static String driverName = "com.mysql.jdbc.Driver";
-    private static String username = "root";
-    private static String password = "";
+    /**
+     * Deklaracja zmiennych
+     */
+    private static String dbName        = "CookBook";
+    private static String url           = "jdbc:mysql://localhost/";
+    private static String driverName    = "com.mysql.jdbc.Driver";
+    private static String username      = "root";
+    private static String password      = "";
     private static Connection con;
 
+    /**
+     * Funkcje
+     */
     public static Connection getConnection() {
         try {
             Class.forName(driverName);

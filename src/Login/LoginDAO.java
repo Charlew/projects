@@ -8,11 +8,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class LoginDAO {
+
+    /**
+     * Variables
+     */
     Connection connection;
     private static String username;
     private static Integer userId;
     private static Integer kcalDemand;
 
+    /**
+     * Getters & setters
+     */
     public Integer getKcalDemand() { return this.kcalDemand; }
     public void setKcalDemand(Integer kcalDemand) { this.kcalDemand = kcalDemand; }
 
@@ -30,14 +37,18 @@ public class LoginDAO {
         return this.userId;
     }
 
+    /**
+     * Functions
+     */
 
+    /** Walidacja wprowadzanych danych do zalogowania */
     protected boolean isLogin(String username, String password) throws SQLException {
         boolean status = false;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
             connection = ConnectionManager.getConnection();
-            preparedStatement = connection.prepareStatement("SELECT id_user, username, kcal_demand FROM users WHERE username = ? AND password = ? ");
+            preparedStatement = connection.prepareStatement("SELECT id_user, username, kcal_demand, eaten_kcal FROM users WHERE username = ? AND password = ? ");
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
 
@@ -50,7 +61,6 @@ public class LoginDAO {
                 System.out.println("User authenticated successfully " + getUsername() + " ID " + getUserId());
                 status = true;
             } else {
-                System.out.println("Error ");
                 status = false;
             }
         } catch (Exception e) {

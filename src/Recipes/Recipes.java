@@ -6,21 +6,31 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class Recipes {
+
+    /**
+     * Variables
+     */
     private IntegerProperty idRecipeProperty;
     private StringProperty nameProperty;
     private IntegerProperty allKcalProperty;
     private StringProperty descriptionProperty;
     private StringProperty usernameProperty;
 
+    /**
+     * Constructors
+     */
     public Recipes(){
-        this.nameProperty = new SimpleStringProperty();
-        this.allKcalProperty = new SimpleIntegerProperty();
-        this.descriptionProperty = new SimpleStringProperty();
-        this.idRecipeProperty = new SimpleIntegerProperty();
-        this.usernameProperty = new SimpleStringProperty();
+        this.nameProperty           = new SimpleStringProperty();
+        this.allKcalProperty        = new SimpleIntegerProperty();
+        this.descriptionProperty    = new SimpleStringProperty();
+        this.idRecipeProperty       = new SimpleIntegerProperty();
+        this.usernameProperty       = new SimpleStringProperty();
 
     }
-    //ID RECIPE
+
+    /**
+     * Getters & setters
+     */
     public int getIdRecipe() {
         return idRecipeProperty.get();
     }
@@ -31,7 +41,6 @@ public class Recipes {
         this.idRecipeProperty.set(idRecipeProperty);
     }
 
-    // NAME
     public String getName(){
         return nameProperty.get();
     }
@@ -42,7 +51,6 @@ public class Recipes {
         return nameProperty;
     }
 
-    // ALL KCAL
     public Integer getAllKcal(){
         return allKcalProperty.get();
     }
@@ -53,7 +61,6 @@ public class Recipes {
         return allKcalProperty;
     }
 
-    // DESCRIPTION
     public String getDescription(){
         return descriptionProperty.get();
     }
@@ -63,8 +70,13 @@ public class Recipes {
     public StringProperty getRecipeDescription(){ return descriptionProperty;
     }
 
-    //USERNAME
-    public String getUsername() { return usernameProperty.get(); }
-    public StringProperty getRecipeUsername() { return usernameProperty; }
-    public void setUsernameProperty(String usernameProperty) { this.usernameProperty.set(usernameProperty); }
+    public String getUsername() {
+        return usernameProperty.get();
+    }
+    public StringProperty getRecipeUsername() {
+        return usernameProperty;
+    }
+    public void setUsernameProperty(String usernameProperty) {
+        this.usernameProperty.set(usernameProperty);
+    }
 }
