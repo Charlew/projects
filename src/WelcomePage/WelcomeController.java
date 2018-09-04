@@ -17,7 +17,7 @@ public class WelcomeController{
      * Variables
      */
     @FXML private Label labelWelcome;
-    @FXML private Button buttonProducts, buttonProfile, buttonRecipes, buttonDiary, buttonLogout;
+    @FXML private Button buttonProducts, buttonProfile, buttonRecipes, buttonMeals, buttonLogout;
 
     /**
      * Functions
@@ -44,10 +44,10 @@ public class WelcomeController{
                 Scene scene = new Scene(root, 1024, 768);
                 primaryStage.setScene(scene);
                 primaryStage.show();
-            }else if(event.getSource() == buttonDiary) {
-                Stage primaryStage = (Stage) buttonDiary.getScene().getWindow();
+            }else if(event.getSource() == buttonMeals) {
+                Stage primaryStage = (Stage) buttonMeals.getScene().getWindow();
                 FXMLLoader loader = new FXMLLoader();
-                Parent root = loader.load(getClass().getResource("../Diary/Diary.fxml").openStream());
+                Parent root = loader.load(getClass().getResource("../Meals/Meals.fxml").openStream());
                 Scene scene = new Scene(root, 1024, 768);
                 primaryStage.setScene(scene);
                 primaryStage.show();

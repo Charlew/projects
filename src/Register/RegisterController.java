@@ -31,18 +31,22 @@ public class RegisterController extends RegisterDAO{
                 alert.setTitle("Rejestracja");
                 alert.setHeaderText("Wprowadź wszystkie dane!");
                 alert.showAndWait();
-            }else if(txtConfirmPassword.getText() != txtPassword.getText()){
+            }else if(!txtConfirmPassword.getText().equals(txtPassword.getText())){
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Rejestracja");
                 alert.setHeaderText("Podane hasła różnią się!");
                 alert.showAndWait();
             } else if(checkUserExists(txtUsername.getText())){
-                labelRegister.setText("Istnieje już użytkownik o podanej nazwie");
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Rejestracja");
+                alert.setHeaderText("");
+                alert.setContentText("Istnieje już użytkownik o podanej nazwie!");
+                alert.showAndWait();
             }else{
                 boolean redirect = false;
                 addUser(txtUsername.getText(), txtEmail.getText(), txtPassword.getText());
                 System.out.println("Password incorrect!");
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Rejestracja");
                 alert.setHeaderText("Rejestracja przebiegła pomyślnie!");
                 alert.setContentText("Zostaniesz przekierowany na strone logowania!");

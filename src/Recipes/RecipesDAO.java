@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class RecipesDAO {
@@ -20,6 +21,10 @@ public class RecipesDAO {
     private static String name;
     private static Integer allKcal;
     private static String description;
+    private static String content;
+    private static String username;
+    private static String comment;
+    private static Date date = new Date();
 
     /**
      * Getters * setters
@@ -45,11 +50,39 @@ public class RecipesDAO {
         this.description = description;
     }
 
+    public String getContent(){
+        return this.content;
+    }
+    public void setContent(String content){
+        this.content = content;
+    }
+
+    public String getUsername(){
+        return this.username;
+    }
+    public void setUsername(String username){
+        this.username = username;
+    }
+
+    public String getComment(){
+        return this.comment;
+    }
+    public void setComment(String comment){
+        this.comment = comment;
+    }
+
+    public Date getCommentDate(){
+        return this.date;
+    }
+    public void setCommentDate(Date date){
+        this.date = date;
+    }
+
     /**
      * Functions
      */
     /** Pobieranie id danego przepisu */
-    protected Integer getRecipeId(){
+    protected Integer getRecipeId() throws SQLException {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         Integer idRecipe = null;
@@ -67,6 +100,9 @@ public class RecipesDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            preparedStatement.close();
+            resultSet.close();
         }
         return idRecipe;
     }
@@ -82,6 +118,9 @@ public class RecipesDAO {
             return recipesList;
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            preparedStatement.close();
+            resultSet.close();
         }
         return null;
     }
@@ -107,7 +146,7 @@ public class RecipesDAO {
     }
 
     /** Pobranie wszystkich skladnikow przepisu */
-    protected String getIngredients(Integer idRecipe) {
+    protected String getIngredients(Integer idRecipe) throws SQLException {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         List<String> ingredients = new ArrayList<String>();
@@ -127,6 +166,9 @@ public class RecipesDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            preparedStatement.close();
+            resultSet.close();
         }
         formattedString = ingredients.toString()
                 .replace(",", "\n")
@@ -138,7 +180,7 @@ public class RecipesDAO {
     }
 
     /** Walidacja przy dodawaniu nowego przepisu */
-    protected Boolean validateIfRecipeExists(String name){
+    protected Boolean validateIfRecipeExists(String name) throws SQLException {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         Boolean found = false;
@@ -153,12 +195,15 @@ public class RecipesDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            preparedStatement.close();
+            resultSet.close();
         }
         return found;
     }
 
     /** Dodawanie przepisu */
-    protected void addRecipe(String name, Integer allKcal, String description){
+    protected void addRecipe(String name, Integer allKcal, String description) throws SQLException {
         PreparedStatement preparedStatement = null;
         try{
              preparedStatement = ConnectionManager.getConnection()
@@ -177,11 +222,13 @@ public class RecipesDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            preparedStatement.close();
         }
     }
 
     /** Dodanie id przepisu i produktu do tabeli laczacej */
-    protected void addRecipesProducts(String productName){
+    protected void addRecipesProducts(String productName) throws SQLException {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try{
@@ -199,28 +246,38 @@ public class RecipesDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            preparedStatement.close();
+            resultSet.close();
         }
     }
 
+
+
     /** Pobranie komentarzy dla wybranego przepisu */
-    protected String getAllComments(int idRecipe){
+    protected String getAllComments(int idRecipe) throws SQLException {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        String content = null, username = null, comment = null;
         List<String> allComments = new ArrayList<>();
+
         try{
             preparedStatement = ConnectionManager.getConnection()
                     .prepareStatement("SELECT * FROM comments WHERE id_recipe = ?");
             preparedStatement.setInt(1, idRecipe);
             resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
-                username = resultSet.getString("username");
-                content = resultSet.getString("content");
-                comment = username + " napisał(a):\n" + content + "\n________________________________________________________________\n";
+                setUsername(resultSet.getString("username"));
+                setContent(resultSet.getString("content"));
+                setCommentDate(resultSet.getDate("date"));
+                setComment(getCommentDate() + " | " +  getUsername() + " napisał(a):\n" + getContent() + "\n________________________________________________________________\n");
+
                 allComments.add(comment);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            preparedStatement.close();
+            resultSet.close();
         }
         return allComments.toString()
                 .replace("[", "")
@@ -231,7 +288,7 @@ public class RecipesDAO {
     }
 
     /** Dodawanie komentarza */
-    protected void addComment(Integer idRecipe, String content){
+    protected void addComment(Integer idRecipe, String content) throws SQLException {
         PreparedStatement preparedStatement = null;
         try{
             preparedStatement = ConnectionManager.getConnection()
@@ -242,6 +299,8 @@ public class RecipesDAO {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            preparedStatement.close();
         }
     }
 }

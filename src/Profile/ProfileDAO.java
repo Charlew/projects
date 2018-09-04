@@ -2,6 +2,7 @@ package Profile;
 
 import DbConnection.ConnectionManager;
 import Login.LoginController;
+import Login.LoginDAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,8 +14,8 @@ public class ProfileDAO {
     /**
      * Variables
      */
-    Connection connection               = ConnectionManager.getConnection();
-    LoginController loginController     = new LoginController();
+    Connection connection = ConnectionManager.getConnection();
+    LoginDAO loginDAO     = new LoginDAO();
 
     private static String age;
     private static Integer weight;
@@ -64,13 +65,13 @@ public class ProfileDAO {
      * Functions
      */
     /** Ustawianie wszystkich wartości przy otworzeniu profilu */
-    protected void setAllAttributes(){
+    protected void setAllAttributes() throws SQLException {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try{
             preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE username = ? AND id_user = ?");
-            preparedStatement.setString(1, loginController.getUsername());
-            preparedStatement.setString(2, loginController.getUserId().toString());
+            preparedStatement.setString(1, loginDAO.getUsername());
+            preparedStatement.setString(2, loginDAO.getUserId().toString());
 
             resultSet = preparedStatement.executeQuery();
 
@@ -88,11 +89,14 @@ public class ProfileDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            preparedStatement.close();
+            resultSet.close();
         }
     }
 
     /** Zapis danych do bazy */
-    protected void insertToProfile(String sex, Integer age, Integer weight, Integer height, Integer kcalDemand){
+    protected void insertToProfile(String sex, Integer age, Integer weight, Integer height, Integer kcalDemand) throws SQLException {
         PreparedStatement preparedStatement = null;
         try{
             preparedStatement = connection.prepareStatement("UPDATE users SET sex = ?, age = ?, weight = ?, height = ?, kcal_demand = ? WHERE username = ? AND id_user = ?");
@@ -101,12 +105,14 @@ public class ProfileDAO {
             preparedStatement.setInt(3, weight);
             preparedStatement.setInt(4, height);
             preparedStatement.setInt(5, kcalDemand);
-            preparedStatement.setString(6, loginController.getUsername());
-            preparedStatement.setInt(7, loginController.getUserId());
+            preparedStatement.setString(6, loginDAO.getUsername());
+            preparedStatement.setInt(7, loginDAO.getUserId());
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            preparedStatement.close();
         }
     }
 }

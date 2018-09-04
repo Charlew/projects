@@ -11,7 +11,7 @@
    <children>
       <Label layoutX="457.0" layoutY="50.0" prefHeight="40.0" prefWidth="110.0" text="Mój profil">
          <font>
-            <Font size="21.0" />
+            <Font name="Corbel" size="24.0" />
          </font></Label>
       <Label layoutX="163.0" layoutY="138.0" prefHeight="27.0" prefWidth="52.0" text="Płeć" />
       <Label layoutX="163.0" layoutY="208.0" prefHeight="27.0" prefWidth="52.0" text="Wiek" />

@@ -7,7 +7,7 @@ import java.sql.SQLException;
 /** Połaczenie z baza danych */
 public class ConnectionManager {
     /**
-     * Deklaracja zmiennych
+     * Variables
      */
     private static String dbName        = "CookBook";
     private static String url           = "jdbc:mysql://localhost/";
@@ -17,7 +17,7 @@ public class ConnectionManager {
     private static Connection con;
 
     /**
-     * Funkcje
+     * Functions
      */
     public static Connection getConnection() {
         try {

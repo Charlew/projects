@@ -11,7 +11,7 @@ public class RegisterDAO {
      * Functions
      */
     /** Sprawdzanie czy istnieje juz taki user */
-    public boolean checkUserExists(String username){
+    public boolean checkUserExists(String username) throws SQLException {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         boolean usernameExists = false;
@@ -32,6 +32,9 @@ public class RegisterDAO {
             }
         }catch(SQLException e){
             e.printStackTrace();
+        }finally {
+            preparedStatement.close();
+            resultSet.close();
         }
         return usernameExists;
     }
@@ -48,6 +51,8 @@ public class RegisterDAO {
             preparedStatement.executeUpdate();
         }catch(SQLException e){
             e.printStackTrace();
+        }finally {
+            preparedStatement.close();
         }
     }
 }

@@ -3,14 +3,33 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="768" prefWidth="1024" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="WelcomePage.WelcomeController">
    <children>
-      <Label fx:id="labelWelcome"      layoutX="463.0" layoutY="134.0" prefHeight="36.0" prefWidth="98.0" text="Menu główne" />
-      <Button fx:id="buttonProducts"   layoutX="333.0" layoutY="233.0" mnemonicParsing="false" onAction="#goTo" prefHeight="31.0" prefWidth="90.0" text="Produkty" />
-      <Button fx:id="buttonDiary"      layoutX="333.0" layoutY="369.0" mnemonicParsing="false" onAction="#goTo" prefHeight="31.0" prefWidth="90.0" text="Dziennik" />
-      <Button fx:id="buttonProfile"    layoutX="666.0" layoutY="369.0" mnemonicParsing="false" onAction="#goTo" prefHeight="31.0" prefWidth="90.0" text="Profil" />
-      <Button fx:id="buttonRecipes"    layoutX="666.0" layoutY="233.0" mnemonicParsing="false" onAction="#goTo" prefHeight="31.0" prefWidth="90.0" text="Przepisy" />
-      <Button fx:id="buttonLogout"     layoutX="480.0" layoutY="490.0" mnemonicParsing="false" onAction="#goTo" text="Wyloguj się" />
+      <Label fx:id="labelWelcome" layoutX="405.0" layoutY="57.0" prefHeight="42.0" prefWidth="214.0" text="Menu główne">
+         <font>
+            <Font name="Corbel" size="36.0" />
+         </font></Label>
+      <Button fx:id="buttonProducts" layoutX="102.0" layoutY="159.0" mnemonicParsing="false" onAction="#goTo" prefHeight="105.0" prefWidth="303.0" text="Produkty">
+         <font>
+            <Font name="Consolas" size="18.0" />
+         </font></Button>
+      <Button fx:id="buttonMeals" layoutX="102.0" layoutY="320.0" mnemonicParsing="false" onAction="#goTo" prefHeight="105.0" prefWidth="303.0" text="Posiłki">
+         <font>
+            <Font name="Consolas" size="18.0" />
+         </font></Button>
+      <Button fx:id="buttonProfile" layoutX="628.0" layoutY="320.0" mnemonicParsing="false" onAction="#goTo" prefHeight="105.0" prefWidth="303.0" text="Profil">
+         <font>
+            <Font name="Consolas" size="18.0" />
+         </font></Button>
+      <Button fx:id="buttonRecipes" layoutX="628.0" layoutY="165.0" mnemonicParsing="false" onAction="#goTo" prefHeight="105.0" prefWidth="303.0" text="Przepisy">
+         <font>
+            <Font name="Consolas" size="18.0" />
+         </font></Button>
+      <Button fx:id="buttonLogout" layoutX="438.0" layoutY="492.0" mnemonicParsing="false" onAction="#goTo" prefHeight="58.0" prefWidth="149.0" text="Wyloguj się">
+         <font>
+            <Font name="Consolas" size="18.0" />
+         </font></Button>
    </children>
 </AnchorPane>

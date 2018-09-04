@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class ProductsDAO {
     LoginDAO loginDAO = new LoginDAO();
@@ -26,6 +27,9 @@ public class ProductsDAO {
             return productsList;
         }catch (SQLException e){
             e.printStackTrace();
+        }finally {
+            preparedStatement.close();
+            resultSet.close();
         }
         return null;
     }
@@ -50,7 +54,7 @@ public class ProductsDAO {
     }
 
     /** Dodawanie nowego produktu do bazy */
-    protected  void insertNewProduct(String name, String kcal, String amount){
+    protected  void insertNewProduct(String name, String kcal, String amount) throws SQLException {
         PreparedStatement preparedStatement = null;
         try{
                 preparedStatement = ConnectionManager.getConnection().prepareStatement("INSERT IGNORE INTO products SET id_user = ?, name = ?, kcal = ?, amount = ?, username = ?;");
@@ -63,11 +67,13 @@ public class ProductsDAO {
                 preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            preparedStatement.close();
         }
     }
 
     /** Walidacja przy dodawaniu nowego produktu */
-    protected Boolean validateIfProductExist(String name){
+    protected Boolean validateIfProductExist(String name) throws SQLException {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         Boolean found = false;
@@ -80,6 +86,9 @@ public class ProductsDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            preparedStatement.close();
+            resultSet.close();
         }
         return found;
     }
@@ -97,7 +106,11 @@ public class ProductsDAO {
            return list;
         }catch (SQLException e){
             e.printStackTrace();
+        }finally {
+            preparedStatement.close();
+            resultSet.close();
         }
         return null;
     }
+
 }

@@ -24,9 +24,14 @@ public class ProfileController extends ProfileDAO{
     /**
      * Functions
      */
-    public void initialize() {
+    public void initialize() throws SQLException {
         /* Inicjalizacja profilu */
         setAllAttributes();
+        tfAge.setText(getAge());
+        tfHeight.setText(getHeight().toString());
+        tfWeight.setText(getWeight().toString());
+        tfKcal.setText(getKcal().toString());
+
         if(getSex().equals("Female")){
             checkboxFemale.setSelected(true);
         }else{
@@ -48,24 +53,53 @@ public class ProfileController extends ProfileDAO{
             if(checkboxFemale.isSelected()){
                 double result = (66.5 + (13.7 * weightTmp) + (5 * heightTmp) - (6.8 * ageTmp)) * 1.2;
                 System.out.println(result);
-                String resultStr = Double.toString((int)result);
+                String resultStr = Integer.toString((int)result);
                 tfKcal.setText(resultStr);
             }else{
                 double result = (655  + (9.6 * weightTmp) + (1.85 * heightTmp) - (4.7 * ageTmp)) * 1.2;
-                String resultStr = Double.toString((int)result);
+                String resultStr = Integer.toString((int)result);
                 tfKcal.setText(resultStr);
             }
         }
     }
 
     /** Zapisanie danych profilu */
-    @FXML void save(ActionEvent event){
+    @FXML void save(ActionEvent event) throws Exception {
         if(checkboxMale.isSelected()){
             insertToProfile("Male", Integer.parseInt(tfAge.getText()), Integer.parseInt(tfWeight.getText()), Integer.parseInt(tfHeight.getText()), Integer.parseInt(tfKcal.getText()));
+
+            boolean redirect = false;
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Powiadomienie");
+            alert.setContentText("Zapisano!");
+            alert.showAndWait();
+
+            if(alert.isShowing()){
+                redirect = false;
+            }else{
+                redirect = true;
+            }
+            if(redirect){
+                backButtonHandle(event);
+            }
         }else {
             insertToProfile("Female", Integer.parseInt(tfAge.getText()), Integer.parseInt(tfWeight.getText()), Integer.parseInt(tfHeight.getText()), Integer.parseInt(tfKcal.getText()));
-        }
 
+            boolean redirect = false;
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Powiadomienie");
+            alert.setContentText("Zapisano!");
+            alert.showAndWait();
+
+            if(alert.isShowing()){
+                redirect = false;
+            }else{
+                redirect = true;
+            }
+            if(redirect){
+                backButtonHandle(event);
+            }
+        }
     }
 
     /** Powrót do poprzedniej strony */

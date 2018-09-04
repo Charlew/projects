@@ -5,14 +5,26 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="768" prefWidth="1024" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Login.LoginController">
    <children>
-      <TextField fx:id="txtUsername" layoutX="454.0" layoutY="316.0" />
-      <PasswordField fx:id="txtPassword" layoutX="454.0" layoutY="369.0" onAction="#Login" />
-      <Button layoutX="477.0" layoutY="442.0" mnemonicParsing="false" onAction="#Login" text="Zaloguj" />
-      <Label layoutX="253.0" layoutY="321.0" text="Nazwa użytkownika" />
-      <Label layoutX="253.0" layoutY="374.0" text="Hasło" />
-      <Button fx:id="buttonBack" layoutX="291.0" layoutY="442.0" mnemonicParsing="false" onAction="#backToMainPage" text="Powrót do menu" />
+      <TextField fx:id="txtUsername" layoutX="454.0" layoutY="316.0" prefHeight="31.0" prefWidth="225.0" />
+      <PasswordField fx:id="txtPassword" layoutX="454.0" layoutY="369.0" onAction="#Login" prefHeight="31.0" prefWidth="225.0" />
+      <Button layoutX="477.0" layoutY="442.0" mnemonicParsing="false" onAction="#Login" prefHeight="44.0" prefWidth="152.0" text="Zaloguj" />
+      <Label layoutX="253.0" layoutY="321.0" text="Nazwa użytkownika">
+         <font>
+            <Font name="Consolas" size="18.0" />
+         </font></Label>
+      <Label layoutX="253.0" layoutY="374.0" text="Hasło">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
+      <Button fx:id="buttonBack" layoutX="262.0" layoutY="442.0" mnemonicParsing="false" onAction="#backToMainPage" prefHeight="44.0" prefWidth="160.0" text="Powrót do menu" />
+      <Label layoutX="452.0" layoutY="163.0" prefHeight="44.0" prefWidth="121.0" text="Logowanie">
+         <font>
+            <Font name="Consolas" size="24.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

@@ -1,11 +1,7 @@
-package Diary;
+package Meals;
 
 import DbConnection.ConnectionManager;
-import Login.LoginController;
 import Login.LoginDAO;
-import Products.ProductsDAO;
-import Recipes.Recipes;
-import Recipes.RecipesDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -13,14 +9,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class DiaryDAO {
+public class MealsDAO {
     LoginDAO loginDAO = new LoginDAO();
 
     /**
      * Functions
      */
     /** Ustawienie ilosci zjedzonych kcal dla usera */
-    protected void setEatenKcal(Integer kcal){
+    protected void setEatenKcal(Integer kcal) throws SQLException {
         PreparedStatement preparedStatement = null;
         try{
             preparedStatement = ConnectionManager.getConnection()
@@ -30,11 +26,13 @@ public class DiaryDAO {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            preparedStatement.close();
         }
     }
 
     /** Pobranie ilości zjedzonych kcal przez usera */
-    protected Integer getEatenKcal(){
+    protected Integer getEatenKcal() throws SQLException {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         Integer eatenKcal = 0;
@@ -48,22 +46,28 @@ public class DiaryDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            preparedStatement.close();
+            resultSet.close();
         }
         return eatenKcal;
     }
 
-    /** Pobranie jedzenia z dziennika dla danegu usera */
-    protected  ObservableList<Food> getAllRecords() throws ClassNotFoundException {
+    /** Pobranie jedzenia z posilkow dla danegu usera */
+    protected  ObservableList<Food> getAllRecords() throws ClassNotFoundException, SQLException {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
-            preparedStatement = ConnectionManager.getConnection().prepareStatement("SELECT * FROM diary WHERE id_user = ?");
+            preparedStatement = ConnectionManager.getConnection().prepareStatement("SELECT * FROM meals WHERE id_user = ?");
             preparedStatement.setInt(1, loginDAO.getUserId());
             resultSet = preparedStatement.executeQuery();
             ObservableList<Food> diaryList = getRecipesObjects(resultSet);
             return diaryList;
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            preparedStatement.close();
+            resultSet.close();
         }
         return null;
     }
@@ -90,8 +94,8 @@ public class DiaryDAO {
         return null;
     }
 
-    /** Zapisanie przepisu w dzienniku */
-    protected void saveRecipesInDiary(String name){
+    /** Zapisanie przepisu w posilkach */
+    protected void saveRecipesInMeals(String name) throws SQLException {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try{
@@ -101,7 +105,7 @@ public class DiaryDAO {
             resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
                 preparedStatement = ConnectionManager.getConnection()
-                        .prepareStatement("INSERT INTO diary SET id_user = ?, id_recipe = ?, recipe_name = ?, kcal = ?");
+                        .prepareStatement("INSERT INTO meals SET id_user = ?, id_recipe = ?, recipe_name = ?, kcal = ?");
                 preparedStatement.setInt(1, loginDAO.getUserId());
                 preparedStatement.setInt(2, resultSet.getInt("id_recipe"));
                 preparedStatement.setString(3, name);
@@ -110,11 +114,14 @@ public class DiaryDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            preparedStatement.close();
+            resultSet.close();
         }
     }
 
-    /** Zapisanie produktu w dzienniku */
-    protected void saveProductsInDiary(String name, Integer kcal){
+    /** Zapisanie produktu w posilkach */
+    protected void saveProductsInMeals(String name, Integer kcal) throws SQLException {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try{
@@ -126,7 +133,7 @@ public class DiaryDAO {
                 System.out.println(resultSet.getInt("id_prod"));
                 System.out.println(name);
                 preparedStatement = ConnectionManager.getConnection()
-                        .prepareStatement("INSERT INTO diary SET id_user = ?, id_product = ?, product_name = ?, kcal = ?");
+                        .prepareStatement("INSERT INTO meals SET id_user = ?, id_product = ?, product_name = ?, kcal = ?");
                 preparedStatement.setInt(1, loginDAO.getUserId());
                 preparedStatement.setInt(2, resultSet.getInt("id_prod"));
                 preparedStatement.setString(3, name);
@@ -135,19 +142,24 @@ public class DiaryDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            preparedStatement.close();
+            resultSet.close();
         }
     }
 
     /** Usuwanie jedzenia z bazy danych */
-    protected void deleteAllFoodFromDiary(){
+    protected void deleteAllFoodFromMeals() throws SQLException {
         PreparedStatement preparedStatement = null;
         try{
             preparedStatement = ConnectionManager.getConnection()
-                    .prepareStatement("DELETE FROM diary WHERE id_user = ?");
+                    .prepareStatement("DELETE FROM meals WHERE id_user = ?");
             preparedStatement.setInt(1, loginDAO.getUserId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            preparedStatement.close();
         }
     }
 

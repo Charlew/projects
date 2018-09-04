@@ -47,11 +47,15 @@ public class RecipesController extends RecipesDAO{
         recipesTable.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if(recipesTable.getSelectionModel().getSelectedItem() != null){
-                    Recipes selectedRecipe = recipesTable.getSelectionModel().getSelectedItem();
-                    taDescription.setText(selectedRecipe.getDescription());
-                    taIngredients.setText(getIngredients(selectedRecipe.getIdRecipe()));
-                    taAllComments.setText(getAllComments(selectedRecipe.getIdRecipe()));
+                try {
+                    if (recipesTable.getSelectionModel().getSelectedItem() != null) {
+                        Recipes selectedRecipe = recipesTable.getSelectionModel().getSelectedItem();
+                        taDescription.setText(selectedRecipe.getDescription());
+                        taIngredients.setText(getIngredients(selectedRecipe.getIdRecipe()));
+                        taAllComments.setText(getAllComments(selectedRecipe.getIdRecipe()));
+                    }
+                }catch (SQLException e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -60,6 +64,11 @@ public class RecipesController extends RecipesDAO{
     /** Zapełnienie tabeli przepisów */
     protected void populateRecipesTable(ObservableList<Recipes> recipesList){
         recipesTable.setItems(recipesList);
+    }
+
+    @FXML void refreshRecipesTable(ActionEvent event) throws SQLException, ClassNotFoundException {
+        ObservableList<Recipes> recipesList = getAllRecords();
+        populateRecipesTable(recipesList);
     }
 
     /** Dodawanie nowego przepisu */
@@ -73,12 +82,13 @@ public class RecipesController extends RecipesDAO{
     }
 
     /** Dodawanie komentarza */
-    @FXML void addComment(ActionEvent event){
+    @FXML void addComment(ActionEvent event) throws SQLException {
         if(recipesTable.getSelectionModel().getSelectedItem() != null) {
             Recipes selectedRecipe = recipesTable.getSelectionModel().getSelectedItem();
             if(taComment.getText() != null){
                 addComment(selectedRecipe.getIdRecipe(), taComment.getText());
                 taAllComments.setText(getAllComments(selectedRecipe.getIdRecipe()));
+                taComment.clear();
             }
         }
     }

@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-<AnchorPane prefHeight="768.0" prefWidth="1024.0" styleClass="border-right: white" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Diary.DiaryController">
+<AnchorPane prefHeight="768.0" prefWidth="1024.0" styleClass="border-right: white" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Meals.MealsController">
    <children>
-      <TableView fx:id="diaryTable" layoutX="325.0" layoutY="362.0" prefHeight="248.0" prefWidth="672.0">
+      <TableView fx:id="mealsTable" layoutX="325.0" layoutY="362.0" prefHeight="248.0" prefWidth="672.0">
         <columns>
           <TableColumn fx:id="colName" prefWidth="433.0" text="Nazwa" />
           <TableColumn fx:id="colKcal" prefWidth="251.0" text="Kcal" />
@@ -19,7 +19,7 @@
       <Button fx:id="buttonBack" layoutX="362.0" layoutY="666.0" mnemonicParsing="false" onAction="#backButtonHandle" text="Powrót" />
       <Pane layoutY="20.0" prefHeight="484.0" prefWidth="310.0" style="-fx-background-color: white;">
          <children>
-            <Button fx:id="buttonProductsToDiary" layoutX="23.0" layoutY="416.0" mnemonicParsing="false" onAction="#addProductToDiary" prefHeight="46.0" prefWidth="243.0" text="Dodaj produkt do dziennika" />
+            <Button fx:id="buttonProductsToDiary" layoutX="23.0" layoutY="416.0" mnemonicParsing="false" onAction="#addProductToMeals" prefHeight="46.0" prefWidth="243.0" text="Dodaj produkt do posiłków" />
              <TextField fx:id="tfNameProduct" layoutX="117.0" layoutY="281.0" prefHeight="31.0" prefWidth="143.0" />
              <Label layoutX="25.0" layoutY="286.0" text="Nazwa" />
              <TextField fx:id="tfKcalProduct" layoutX="117.0" layoutY="322.0" prefHeight="31.0" prefWidth="91.0" />
@@ -45,13 +45,13 @@
                      <TableColumn fx:id="colRecUsername" prefWidth="113.0" text="Dodane przez" />
                  </columns>
              </TableView>
-            <Button fx:id="buttonRecipesToDiary" layoutX="287.0" layoutY="264.0" mnemonicParsing="false" onAction="#addRecipeToDiary" prefHeight="46.0" prefWidth="243.0" text="Dodaj całą potrawe do dziennika" />
+            <Button fx:id="buttonRecipesToDiary" layoutX="287.0" layoutY="264.0" mnemonicParsing="false" onAction="#addRecipeToMeals" prefHeight="46.0" prefWidth="243.0" text="Dodaj całą potrawe do posiłków" />
          </children></Pane>
       <TextField fx:id="tfKcalSum" layoutX="123.0" layoutY="528.0" prefHeight="31.0" prefWidth="152.0" />
       <Label layoutX="42.0" layoutY="533.0" text="Suma kcal " />
       <TextField fx:id="tfKcalRemain" layoutX="123.0" layoutY="567.0" prefHeight="31.0" prefWidth="152.0" />
       <Label layoutX="42.0" layoutY="572.0" text="Pozostało" />
-      <Button layoutX="481.0" layoutY="666.0" mnemonicParsing="false" onAction="#saveDiary" text="Zapisz" />
+      <Button layoutX="481.0" layoutY="666.0" mnemonicParsing="false" onAction="#saveMeals" text="Zapisz" />
       <Button fx:id="buttonDeleteOne" layoutX="717.0" layoutY="610.0" mnemonicParsing="false" onAction="#deleteFood" text="Usuń wybrany" />
       <Button fx:id="buttonDeleteAll" layoutX="578.0" layoutY="610.0" mnemonicParsing="false" onAction="#deleteFood" text="Usuń wszystko" />
    </children>
