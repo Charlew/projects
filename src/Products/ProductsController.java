@@ -48,12 +48,19 @@ public class ProductsController extends ProductsDAO{
         if(event.getSource() == buttonAdd) {
             if(!(tfNameAdd.getText().isEmpty() && tfKcal.getText().isEmpty() && tfAmount.getText().isEmpty())){
                 if(!validateIfProductExist(tfNameAdd.getText())){
-                    insertNewProduct(tfNameAdd.getText(), tfKcal.getText(), tfAmount.getText());
-                    tfNameAdd.setText("");
-                    tfKcal.setText("");
-                    tfAmount.setText("");
-                    ObservableList<Products> productsList = getAllRecords();
-                    populateTable(productsList);
+                    if((Integer.parseInt(tfKcal.getText())) <= 0 || Integer.parseInt(tfAmount.getText()) <= 0){
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("Błąd");
+                        alert.setContentText("Wprowadź poprawne dane!");
+                        alert.showAndWait();
+                    }else{
+                        insertNewProduct(tfNameAdd.getText(), tfKcal.getText(), tfAmount.getText());
+                        tfNameAdd.setText("");
+                        tfKcal.setText("");
+                        tfAmount.setText("");
+                        ObservableList<Products> productsList = getAllRecords();
+                        populateTable(productsList);
+                    }
                 }else{
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setTitle("Błąd");
